@@ -45,7 +45,7 @@ class Matrix {
     }
 }
 
-class LinearAlgebra {
+class LinearAlgebraWcomplexNums {
 
     // Matrix-vector multiplication (complex)
     public static Vector multiply(Matrix m, Vector v) {
