@@ -53,17 +53,43 @@ class QuantumGates {
     }
 
     // ----------------------------
-    // CNOT gate (4x4 matrix)
-    // Control qubit = first qubit
-    // Target qubit = second qubit
+    // Controlled-NOT gate (default: control=0, target=1)
     // ----------------------------
     public static Matrix CNOT() {
-        return new Matrix(new complexNum[][]{
-            { new complexNum(1, 0), new complexNum(0, 0), new complexNum(0, 0), new complexNum(0, 0) },
-            { new complexNum(0, 0), new complexNum(1, 0), new complexNum(0, 0), new complexNum(0, 0) },
-            { new complexNum(0, 0), new complexNum(0, 0), new complexNum(0, 0), new complexNum(1, 0) },
-            { new complexNum(0, 0), new complexNum(0, 0), new complexNum(1, 0), new complexNum(0, 0) }
-        });
+        return CNOT(0, 1);
+    }
+
+    // ----------------------------
+    // Controlled-NOT gate (explicit control/target for 2 qubits)
+    // Basis order: |00>, |01>, |10>, |11>
+    // ----------------------------
+    public static Matrix CNOT(int control, int target) {
+
+        if (control == target) {
+            throw new IllegalArgumentException("Control and target cannot be the same qubit");
+        }
+
+        // Standard CNOT: control=0, target=1
+        if (control == 0 && target == 1) {
+            return new Matrix(new complexNum[][]{
+                { new complexNum(1, 0), new complexNum(0, 0), new complexNum(0, 0), new complexNum(0, 0) },
+                { new complexNum(0, 0), new complexNum(1, 0), new complexNum(0, 0), new complexNum(0, 0) },
+                { new complexNum(0, 0), new complexNum(0, 0), new complexNum(0, 0), new complexNum(1, 0) },
+                { new complexNum(0, 0), new complexNum(0, 0), new complexNum(1, 0), new complexNum(0, 0) }
+            });
+        }
+
+        // Reversed CNOT: control=1, target=0
+        if (control == 1 && target == 0) {
+            return new Matrix(new complexNum[][]{
+                { new complexNum(1, 0), new complexNum(0, 0), new complexNum(0, 0), new complexNum(0, 0) },
+                { new complexNum(0, 0), new complexNum(0, 0), new complexNum(0, 0), new complexNum(1, 0) },
+                { new complexNum(0, 0), new complexNum(0, 0), new complexNum(1, 0), new complexNum(0, 0) },
+                { new complexNum(0, 0), new complexNum(1, 0), new complexNum(0, 0), new complexNum(0, 0) }
+            });
+        }
+
+        throw new IllegalArgumentException("CNOT only supports 2-qubit systems (0/1 indexing)");
     }
     // ----------------------------
     // Phase gate (S)

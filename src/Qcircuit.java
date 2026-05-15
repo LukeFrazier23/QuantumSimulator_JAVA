@@ -57,17 +57,38 @@ public class Qcircuit {
     }
 
     // ----------------------------
-    // Two-qubit gates (already full-system matrices)
+    // Controlled-NOT (default: qubit 0 -> 1)
     // ----------------------------
     public void cnot() {
-        operations.add(new Operation(QuantumGates.CNOT(), -1));
+        cnot(0, 1);
+    }
+
+    // ----------------------------
+    // Controlled-NOT (explicit control/target)
+    // ----------------------------
+    public void cnot(int control, int target) {
+        operations.add(new Operation(QuantumGates.CNOT(control, target), -1));
     }
 
     public void swap() {
+        swap(0, 1);
+    }
+
+    public void swap(int q1, int q2) {
+        if (q1 == q2) {
+            throw new IllegalArgumentException("Swap requires two different qubits");
+        }
         operations.add(new Operation(QuantumGates.SWAP(), -1));
     }
 
     public void cz() {
+        cz(0, 1);
+    }
+
+    public void cz(int control, int target) {
+        if (control == target) {
+            throw new IllegalArgumentException("Control and target cannot be the same");
+        }
         operations.add(new Operation(QuantumGates.CZ(), -1));
     }
 
